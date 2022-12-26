@@ -83,7 +83,7 @@ HRESULT CGame::Init()
 	}
 
 	//GetUiPointer
-	C2DPolygon *pPolygon = m_pBg->CreateUi(3);
+	C2DPolygon *pPolygon = m_pBg->CreateUi(4);
 
 	//SetUiData
 	int nIndex = CTexture::LoadTexture("data/TEXTURE/sky.png");
@@ -99,19 +99,20 @@ HRESULT CGame::Init()
 	pPolygon[1].SetColor(D3DXCOLOR(0.4f,1.0f,1.0f,1.0f));
 	pPolygon[1].SetPolygon();
 
-	nIndex = CTexture::LoadTexture("data/TEXTURE/.png");
-	pPolygon[1].SetTextIndex(nIndex);
-	pPolygon[1].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 100.0f, 0.0f));
-	pPolygon[1].SetDiagonalLine(SCREEN_WIDTH, 20.0f);
-	pPolygon[1].SetColor(D3DXCOLOR(0.4f, 1.0f, 1.0f, 1.0f));
-	pPolygon[1].SetPolygon();
-
-	nIndex = CTexture::LoadTexture("data/TEXTURE/sea.png");
+	nIndex = CTexture::LoadTexture("data/TEXTURE/Cloud.png");
 	pPolygon[2].SetTextIndex(nIndex);
-	pPolygon[2].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
-	pPolygon[2].SetDiagonalLine(SCREEN_WIDTH, SCREEN_HEIGHT);
+	pPolygon[2].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 100.0f, 0.0f));
+	pPolygon[2].SetDiagonalLine(SCREEN_WIDTH, 100.0f);
+	pPolygon[2].SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	pPolygon[2].SetUVMove(D3DXVECTOR2(0.0005f, 0.0f));
 	pPolygon[2].SetPolygon();
+
+	nIndex = CTexture::LoadTexture("data/TEXTURE/sea.png");
+	pPolygon[3].SetTextIndex(nIndex);
+	pPolygon[3].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+	pPolygon[3].SetDiagonalLine(SCREEN_WIDTH, SCREEN_HEIGHT);
+	pPolygon[3].SetUVMove(D3DXVECTOR2(0.0005f, 0.0f));
+	pPolygon[3].SetPolygon();
 
 	return S_OK;
 
