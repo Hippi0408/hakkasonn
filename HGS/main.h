@@ -69,5 +69,4 @@ class CManager;
 
 CManager *GetManager();
 
-
 #endif
