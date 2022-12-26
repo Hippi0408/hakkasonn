@@ -33,27 +33,6 @@ CGame::~CGame()
 //*****************************************************************************
 HRESULT CGame::Init()
 {
-	//nullptr
-	m_pUi = nullptr;
-
-	//GetUiData
-	m_pUi = new CUI;
-
-	//UiInit
-	if (FAILED(m_pUi->Init()))
-	{
-		return -1;
-	}
-
-	//GetUiPointer
-	C2DPolygon *pPolygon = m_pUi->CreateUi(1);
-
-	//SetUiData
-	int nIndex = CTexture::LoadTexture("data/TEXTURE/ƒQ[ƒ€.png");
-	pPolygon[0].SetTextIndex(nIndex);
-	pPolygon[0].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
-	pPolygon[0].SetDiagonalLine(200.0f, 200.0f);
-	pPolygon[0].SetPolygon();
 	return S_OK;
 }
 
@@ -62,14 +41,6 @@ HRESULT CGame::Init()
 //*****************************************************************************
 void CGame::Uninit()
 {
-	//UiRelease
-	if (m_pUi != nullptr)
-	{
-		//UiUninit
-		m_pUi->Uninit();
-		delete m_pUi;
-		m_pUi = nullptr;
-	}
 }
 
 //*****************************************************************************
@@ -77,8 +48,6 @@ void CGame::Uninit()
 //*****************************************************************************
 void CGame::Update()
 {
-	//UiUpdate
-	m_pUi->Update();
 
 	//GetInput
 	CInput *pInput = CInput::GetKey();
@@ -96,6 +65,4 @@ void CGame::Update()
 //*****************************************************************************
 void CGame::Draw()
 {
-	//UiDraw
-	m_pUi->Draw();
 }
