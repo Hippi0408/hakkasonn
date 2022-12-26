@@ -98,7 +98,7 @@ HRESULT CGame::Init()
 	}
 
 	//GetUiPointer
-	C2DPolygon *pPolygon = m_pBg->CreateUi(3);
+	C2DPolygon *pPolygon = m_pBg->CreateUi(4);
 
 	//SetUiData
 	int nIndex = CTexture::LoadTexture("data/TEXTURE/sky.png");
@@ -114,12 +114,20 @@ HRESULT CGame::Init()
 	pPolygon[1].SetColor(D3DXCOLOR(0.4f,1.0f,1.0f,1.0f));
 	pPolygon[1].SetPolygon();
 
-	nIndex = CTexture::LoadTexture("data/TEXTURE/sea.png");
+	nIndex = CTexture::LoadTexture("data/TEXTURE/Cloud.png");
 	pPolygon[2].SetTextIndex(nIndex);
-	pPolygon[2].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
-	pPolygon[2].SetDiagonalLine(SCREEN_WIDTH, SCREEN_HEIGHT);
+	pPolygon[2].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 100.0f, 0.0f));
+	pPolygon[2].SetDiagonalLine(SCREEN_WIDTH, 100.0f);
+	pPolygon[2].SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	pPolygon[2].SetUVMove(D3DXVECTOR2(0.0005f, 0.0f));
 	pPolygon[2].SetPolygon();
+
+	nIndex = CTexture::LoadTexture("data/TEXTURE/sea.png");
+	pPolygon[3].SetTextIndex(nIndex);
+	pPolygon[3].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+	pPolygon[3].SetDiagonalLine(SCREEN_WIDTH, SCREEN_HEIGHT);
+	pPolygon[3].SetUVMove(D3DXVECTOR2(0.0005f, 0.0f));
+	pPolygon[3].SetPolygon();
 
 	return S_OK;
 }
@@ -152,6 +160,7 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	m_pBg->Update();
+
 	if (g_PushState.nColorCount <= 0)
 	{
 		//色のリセット
@@ -168,12 +177,11 @@ void CGame::Update()
 	g_PushState.nPushLimitTime--;
 	g_PushState.nTotalLimitTime--;
 	g_PushState.nColorCount--;
-
 	if (g_PushState.nPushLimitTime <= 0)
 	{//次のボタンまでの時間が０になったとき
 
-		//目標ボタンをランダムに設定
-		int nRandButton = rand()%(TARGETBUTTON_MAX-1);
+	 //目標ボタンをランダムに設定
+		int nRandButton = rand() % (TARGETBUTTON_MAX - 1);
 		int nRandTime = (rand() % MAX_TIME + 2) * 60;
 
 		g_PushState.NowTargetButton = (TARGETBUTTON)(nRandButton + 1);
@@ -182,15 +190,6 @@ void CGame::Update()
 
 	//GetInput
 	CInput *pInput = CInput::GetKey();
-
-	//ドミノ情報取得
-	Domino *pDomino = GetDomino();
-
-	//ドミノ更新
-	UpdateDomino();
-
-	//スクロールの管理
-	ManageScroll();
 
 	//===============================================
 	//目標ボタンが押されているかの判定
@@ -235,6 +234,17 @@ void CGame::Update()
 		}
 	}
 
+	m_pButton->Update();
+
+	//ドミノ情報取得
+	Domino *pDomino = GetDomino();
+
+	//ドミノ更新
+	UpdateDomino();
+
+	//スクロールの管理
+	ManageScroll();
+
 	if (g_PushState.nTotalLimitTime <= 0 && g_gameState == GAMESTATE_PUSH)
 	{//制限時間がなくなったとき
 		for (int nCntDomino = 0; nCntDomino < g_PushState.nPushCount; nCntDomino++)
@@ -253,7 +263,6 @@ void CGame::Update()
 		}
 	}
 
-	m_pButton->Update();
 }
 
 //*****************************************************************************
