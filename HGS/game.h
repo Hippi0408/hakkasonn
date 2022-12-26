@@ -59,6 +59,7 @@ public:
 
 private:
 	C2DPolygon* m_pSea;
+	C2DPolygon* m_pButton;
 
 
 

@@ -20,10 +20,12 @@
 #define MAX_TIME (5)
 #define TIMELIMIT (30)
 
+
 //*****************************************************************************
 // グローバル宣言
 //*****************************************************************************
 PUSHSTATE g_PushState;
+static const D3DXVECTOR3 POS_UP = D3DXVECTOR3(100.0f, 100.0f, 0.0f);
 
 //*****************************************************************************
 // コンストラクタ
@@ -45,7 +47,7 @@ CGame::~CGame()
 HRESULT CGame::Init()
 {
 	//各数値初期化
-	g_PushState.NowTargetButton == TARGETBUTTON_NONE;
+	g_PushState.NowTargetButton = TARGETBUTTON_NONE;
 	g_PushState.nPushCount = 0;
 	g_PushState.nPushLimitTime = 0;
 	g_PushState.nTotalLimitTime = TIMELIMIT * 60;
@@ -55,6 +57,17 @@ HRESULT CGame::Init()
 	srand((unsigned int)time);
 
 
+	m_pButton = new C2DPolygon;
+	if (FAILED(m_pButton->Init()))
+	{
+		return -1;
+	}
+	int nTex = CTexture::LoadTexture("data\\TEXTURE\\十字.png");
+	m_pButton->SetTextIndex(nTex);
+	m_pButton->SetUp(POS_UP, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pButton->SetDiagonalLine(100.0f,100.0f);
+	m_pButton->SetPolygon();
+
 	return S_OK;
 }
 
@@ -63,6 +76,12 @@ HRESULT CGame::Init()
 //*****************************************************************************
 void CGame::Uninit()
 {
+	if (m_pButton != nullptr)
+	{
+		m_pButton->Uninit();
+		delete m_pButton;
+		m_pButton = nullptr;
+	}
 }
 
 //*****************************************************************************
@@ -131,4 +150,5 @@ void CGame::Update()
 //*****************************************************************************
 void CGame::Draw()
 {
+	m_pButton->Draw();
 }
