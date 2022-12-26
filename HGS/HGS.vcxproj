@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="2dpolygon.cpp" />
     <ClCompile Include="DirectInput.cpp" />
+    <ClCompile Include="domino.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="2dpolygon.h" />
     <ClInclude Include="DirectInput.h" />
+    <ClInclude Include="domino.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
