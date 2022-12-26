@@ -98,7 +98,7 @@ HRESULT CGame::Init()
 	}
 
 	//GetUiPointer
-	C2DPolygon *pPolygon = m_pBg->CreateUi(3);
+	C2DPolygon *pPolygon = m_pBg->CreateUi(4);
 
 	//SetUiData
 	int nIndex = CTexture::LoadTexture("data/TEXTURE/sky.png");
@@ -114,12 +114,20 @@ HRESULT CGame::Init()
 	pPolygon[1].SetColor(D3DXCOLOR(0.4f,1.0f,1.0f,1.0f));
 	pPolygon[1].SetPolygon();
 
-	nIndex = CTexture::LoadTexture("data/TEXTURE/sea.png");
+	nIndex = CTexture::LoadTexture("data/TEXTURE/Cloud.png");
 	pPolygon[2].SetTextIndex(nIndex);
-	pPolygon[2].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
-	pPolygon[2].SetDiagonalLine(SCREEN_WIDTH, SCREEN_HEIGHT);
+	pPolygon[2].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 100.0f, 0.0f));
+	pPolygon[2].SetDiagonalLine(SCREEN_WIDTH, 100.0f);
+	pPolygon[2].SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	pPolygon[2].SetUVMove(D3DXVECTOR2(0.0005f, 0.0f));
 	pPolygon[2].SetPolygon();
+
+	nIndex = CTexture::LoadTexture("data/TEXTURE/sea.png");
+	pPolygon[3].SetTextIndex(nIndex);
+	pPolygon[3].SetPos(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+	pPolygon[3].SetDiagonalLine(SCREEN_WIDTH, SCREEN_HEIGHT);
+	pPolygon[3].SetUVMove(D3DXVECTOR2(0.0005f, 0.0f));
+	pPolygon[3].SetPolygon();
 
 	return S_OK;
 }
@@ -152,17 +160,6 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	m_pBg->Update();
-	if (g_PushState.nColorCount <= 0)
-	{
-		//色のリセット
-		m_pButton->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-		g_PushState.nColorCount = 0;
-	}
-	else
-	{
-		//色の変更
-		m_pButton->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-	}
 
 	//制限時間減少
 	g_PushState.nPushLimitTime--;
@@ -183,6 +180,8 @@ void CGame::Update()
 	//GetInput
 	CInput *pInput = CInput::GetKey();
 
+	//EndGame
+	if (pInput->Trigger(KEY_DECISION))
 	//ドミノ情報取得
 	Domino *pDomino = GetDomino();
 
@@ -253,7 +252,6 @@ void CGame::Update()
 		}
 	}
 
-	m_pButton->Update();
 }
 
 //*****************************************************************************
