@@ -54,6 +54,7 @@ HRESULT CGame::Init()
 	DWORD time = timeGetTime();
 	srand((unsigned int)time);
 
+
 	return S_OK;
 }
 
