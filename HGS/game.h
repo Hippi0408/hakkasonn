@@ -13,8 +13,39 @@
 #include "object.h"
 
 //*****************************************************************************
+// マクロ定義
+//*****************************************************************************
+#define CLOSSKEY (4)
+
+//*****************************************************************************
+// 列挙型宣言
+//*****************************************************************************
+typedef enum
+{
+	TARGETBUTTON_NONE = 0,
+	TARGETBUTTON_UP,
+	TARGETBUTTON_DOWN,
+	TARGETBUTTON_RIGHT,
+	TARGETBUTTON_LEFT,
+	TARGETBUTTON_MAX
+}TARGETBUTTON;
+
+//*****************************************************************************
+// 構造体宣言
+//*****************************************************************************
+typedef struct
+{
+	TARGETBUTTON NowTargetButton; //押すボタン
+	int nPushCount; //押した回数
+	int nPushLimitTime; //次のボタンに移行するまでの時間
+	int nTotalLimitTime; //ゲームの制限時間
+	int nColorCount; //色の変化時間
+}PUSHSTATE;
+
+//*****************************************************************************
 // 前方宣言
 //*****************************************************************************
+class C2DPolygon;
 class CUI;
 
 //*****************************************************************************
@@ -46,7 +77,15 @@ public:
 	void Draw() override;
 
 private:
-	CUI *m_pUi;
+	C2DPolygon* m_pSea;
+	CUI* m_pBg;
+	C2DPolygon* m_pButton;
+
+
+
+
+
+
 };
 
 
@@ -57,5 +96,6 @@ private:
 D3DXVECTOR3 *GetPosWorld(void);
 GAMESTATE GetGameState(void);
 void SetGameState(GAMESTATE state);
+
 
 #endif
