@@ -234,17 +234,6 @@ void CGame::Update()
 		}
 	}
 
-	m_pButton->Update();
-
-	//ドミノ情報取得
-	Domino *pDomino = GetDomino();
-
-	//ドミノ更新
-	UpdateDomino();
-
-	//スクロールの管理
-	ManageScroll();
-
 	if (g_PushState.nTotalLimitTime <= 0 && g_gameState == GAMESTATE_PUSH)
 	{//制限時間がなくなったとき
 		for (int nCntDomino = 0; nCntDomino < g_PushState.nPushCount; nCntDomino++)
