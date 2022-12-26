@@ -21,7 +21,8 @@ typedef enum
 	TARGETBUTTON_UP,
 	TARGETBUTTON_DOWN,
 	TARGETBUTTON_RIGHT,
-	TARGETBUTTON_LEFT
+	TARGETBUTTON_LEFT,
+	TARGETBUTTON_MAX
 }TARGETBUTTON;
 
 //*****************************************************************************
@@ -29,9 +30,10 @@ typedef enum
 //*****************************************************************************
 typedef struct
 {
-	TARGETBUTTON NowTargetButton;
-	int nPushCount;
-	int nPushLimitTime;
+	TARGETBUTTON NowTargetButton; //押すボタン
+	int nPushCount; //押した回数
+	int nPushLimitTime; //次のボタンに移行するまでの時間
+	int nTotalLimitTime; //ゲームの制限時間
 }PUSHSTATE;
 
 //*****************************************************************************
@@ -57,14 +59,8 @@ public:
 
 private:
 	CUI *m_pUi;
+
 };
 
-//*****************************************************************************
-//プロトタイプ宣言
-//*****************************************************************************
-void InitGame();
-void UninitGame();
-void UpdateGame();
-void DrawGame();
 
 #endif
