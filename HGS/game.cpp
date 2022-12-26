@@ -21,7 +21,7 @@
 #define DOMINO_SPACE			(50)					//ドミノ同士の間隔
 #define SCROLL_SPEED			(8.0f)					//スクロールスピード
 #define MAX_TIME (3)
-#define TIMELIMIT (30)
+#define TIMELIMIT (10)
 #define CLOSSKEY (4)
 
 //*****************************************************************************
@@ -38,7 +38,6 @@ static const D3DXVECTOR3 POS_RIGHT = D3DXVECTOR3(POS.x + 70.0f, POS.y, 0.0f);
 static const D3DXVECTOR3 POS_LEFT = D3DXVECTOR3(POS.x - 70.0f, POS.y, 0.0f);
 D3DXVECTOR3 g_posWorld;
 GAMESTATE g_gameState;
-
 
 //*****************************************************************************
 // コンストラクタ
@@ -61,7 +60,7 @@ HRESULT CGame::Init()
 {
 	//変数初期化
 	g_posWorld = {0.0f,0.0f,0.0f};
-	g_gameState = GAMESTATE_NONE;
+	g_gameState = GAMESTATE_PUSH;
 
 	//ドミノ初期化
 	InitDomino();
@@ -76,7 +75,6 @@ HRESULT CGame::Init()
 	//乱数の種を取得
 	DWORD time = timeGetTime();
 	srand((unsigned int)time);
-
 
 	m_pButton = new C2DPolygon;
 	if (FAILED(m_pButton->Init()))
@@ -124,7 +122,6 @@ HRESULT CGame::Init()
 	pPolygon[2].SetPolygon();
 
 	return S_OK;
-
 }
 
 //*****************************************************************************
@@ -171,6 +168,7 @@ void CGame::Update()
 	g_PushState.nPushLimitTime--;
 	g_PushState.nTotalLimitTime--;
 	g_PushState.nColorCount--;
+
 	if (g_PushState.nPushLimitTime <= 0)
 	{//次のボタンまでの時間が０になったとき
 
@@ -190,25 +188,6 @@ void CGame::Update()
 
 	//ドミノ更新
 	UpdateDomino();
-
-	if (pInput->Trigger(KEY_SHOT))
-	{//ドミノ倒す
-		g_gameState = GAMESTATE_DOWN;
-	}
-
-	if (pInput->Press(KEY_UP))
-	{//ドミノ召喚
-		SetDomino(D3DXVECTOR3(SCREEN_WIDTH * 0.5f + GetDominoNum() * DOMINO_SPACE, SCREEN_HEIGHT * 0.5f, 0.0f));
-	}
-
-	if (pInput->Press(KEY_LEFT))
-	{//原点操作
-		g_posWorld.x -= SCROLL_SPEED;
-	}
-	else if (pInput->Press(KEY_RIGHT))
-	{//原点操作
-		g_posWorld.x += SCROLL_SPEED;
-	}
 
 	//スクロールの管理
 	ManageScroll();
@@ -256,12 +235,24 @@ void CGame::Update()
 		}
 	}
 
-	//EndGame
-	if (g_PushState.nTotalLimitTime <= 0)
+	if (g_PushState.nTotalLimitTime <= 0 && g_gameState == GAMESTATE_PUSH)
 	{//制限時間がなくなったとき
-		CManager * pManager = GetManager();
-		pManager->NextMode(TYPE_RESULT);
+		for (int nCntDomino = 0; nCntDomino < g_PushState.nPushCount; nCntDomino++)
+		{//ドミノ召喚
+			SetDomino(D3DXVECTOR3(SCREEN_WIDTH * 0.5f + nCntDomino * DOMINO_SPACE, SCREEN_HEIGHT * 0.5f, 0.0f));
+		}
+		SetGameState(GAMESTATE_DOWN);
 	}
+
+	if (g_gameState == GAMESTATE_END)
+	{
+		if (pInput->Trigger(KEY_DECISION))
+		{
+			CManager * pManager = GetManager();
+			pManager->NextMode(TYPE_RESULT);
+		}
+	}
+
 	m_pButton->Update();
 }
 
@@ -287,8 +278,14 @@ void ManageScroll(void)
 //*****************************************************************************
 void CGame::Draw()
 {
+	//背景描画
 	m_pBg->Draw();
-	m_pButton->Draw();
+
+	if (g_gameState == GAMESTATE_PUSH)
+	{//ボタン描画
+		m_pButton->Draw();
+	}
+	
 	//ドミノ描画
 	DrawDomino();
 }

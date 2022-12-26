@@ -57,6 +57,7 @@ typedef enum
 	GAMESTATE_NORMAL,						//’Êíó‘Ô
 	GAMESTATE_PUSH,							//˜A‘Åó‘Ô
 	GAMESTATE_DOWN,							//“|‚ê‚éó‘Ô
+	GAMESTATE_END,							//I—¹ó‘Ô
 	GAMESTATE_MAX
 }GAMESTATE;
 

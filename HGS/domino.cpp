@@ -252,7 +252,7 @@ void ManageStateDomino(Domino *pDomino)
 		{
 			pDomino->rot.z = -D3DX_PI * 0.5f;
 			pDomino->state = DOMINOSTATE_END;
-			SetGameState(GAMESTATE_NONE);
+			SetGameState(GAMESTATE_END);
 		}
 
 		break;
